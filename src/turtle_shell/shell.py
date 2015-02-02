@@ -48,9 +48,10 @@ class TurtleShell(object):
         theta = radians(theta)
     
         # how far the robot can turn in a second
+        # needs to be checked for individual robots
         speed = radians(20)
 
-        # error range 
+        # acceptable target rotation error
         error = radians(10)
 
         # target 
@@ -63,10 +64,10 @@ class TurtleShell(object):
 
         rate = rospy.Rate(10)
 
-        while not rospy.is_shutdown() and abs(target_theta - self.theta) > error: 
-            print abs(target_theta - self.theta)
+        while not rospy.is_shutdown() and radian_abs(target_theta, self.theta) > error: 
             print self.theta
             print target_theta
+            print radian_abs(target_theta, self.theta)
             print '\n'
             pub.publish(tw)
             rate.sleep()
