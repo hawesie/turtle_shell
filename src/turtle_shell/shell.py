@@ -7,15 +7,15 @@ from math import radians, fmod, pi
 from turtlesim.msg import Pose
 
 
-def radians_abs(r1, r2):
+def radian_abs(r1, r2):
     if r1 >= 0 and r2 >= 0:
         return abs(r1 - r2)
     elif r1 < 0 and r2 < 0:
         return abs(r1 - r2)
     elif r1 >= 0: #means r2 < 0 also
-        return abs(r1 - wrap_radians(r2 + 2 * math.pi))
+        return abs(r1 - (r2 + (2 * pi)))
     else:
-        return abs(r1 - wrap_radians(r2 - 2 * math.pi))
+        return abs(r1 - (r2 - (2 * pi)))
 
 def wrap_radians(rads):
     if rads > 0:
