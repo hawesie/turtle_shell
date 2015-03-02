@@ -4,7 +4,7 @@ PKG = 'turtle_shell'
 
 import sys
 import unittest
-from turtle_shell.shell import wrap_radians, radian_abs
+from turtle_shell import wrap_radians, radian_abs
 import math
 
 ## A sample python unit test
@@ -22,6 +22,19 @@ class TestFunctions(unittest.TestCase):
     	self.assertEquals(radian_abs(math.pi, math.pi), 0)
     	self.assertEquals(radian_abs(math.pi/2, -math.pi/2), math.pi)
     	self.assertEquals(radian_abs(-math.pi/2, math.pi/2), math.pi)
+
+
+
+# -0.0121359736339
+# 1.0827346816
+# 5.18831465195
+
+
+
+# 0.0227706114059
+# 1.0827346816
+# 1.05996407019
+
 
 if __name__ == '__main__':
     import rostest
