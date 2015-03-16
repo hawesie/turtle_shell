@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-from turtle_shell import turtlebot
+from turtle_shell import scitos
 
-(x,y) = turtlebot.position()
+(x,y) = scitos.position()
 print(x, y)
-# turtlebot.rotate(90)        
-turtlebot.goto(x + 2, y)
-# turtlebot.goto(0, 0)
-(x,y) = turtlebot.position()
+
+scitos.rotate(90)        
+
+(x,y) = scitos.position()
 print(x, y)
 

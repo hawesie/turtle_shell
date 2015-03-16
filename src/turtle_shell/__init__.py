@@ -5,10 +5,12 @@ from geometry_msgs.msg import Twist, Pose
 from math import radians, fmod, pi, degrees
 
 def wrap_radians(rads):
-    if rads > 0:
-        return fmod(rads, pi)
+    if rads > pi:
+        return -pi + fmod(rads, pi)
+    elif rads < -pi:
+        return pi + fmod(rads, -pi)
     else:
-        return fmod(rads, -pi)
+        return rads
 
 class TurtleShell(object):
     """docstring for TurtleShell"""
@@ -56,19 +58,23 @@ class TurtleShell(object):
         tw = Twist()
         tw.angular.z = speed if theta > 0 else -speed
 
-        # loop a little faster than pose updates
         rate = rospy.Rate(12)
 
         while not rospy.is_shutdown() and abs(target_theta - self.theta) > error: 
-            rospy.logdebug(self.theta)
-            rospy.logdebug(target_theta)
-            rospy.logdebug(abs(target_theta - self.theta))
-            rospy.logdebug('\n')
+            # rospy.loginfo(self.theta)
+            # rospy.loginfo(target_theta)
+            # rospy.loginfo(abs(target_theta - self.theta))
+            # rospy.loginfo('\n')
             self.pub.publish(tw)
             rate.sleep()
 
         tw.angular.z = 0
-        self.pub.publish(tw) 
+        count = 0
+        while not rospy.is_shutdown() and count < 10: 
+            self.pub.publish(tw)
+            rate.sleep()
+            count += 1
+
 
     
 
