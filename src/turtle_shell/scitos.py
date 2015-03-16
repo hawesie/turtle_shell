@@ -32,6 +32,13 @@ def get_impl():
 def rotate(theta):           
     get_impl().rotate(theta)
 
+def left(theta):           
+    get_impl().left(theta)
+
+def right(theta):           
+    get_impl().right(theta)
+
+
 def pos():
     return position()
 
@@ -41,3 +48,8 @@ def position():
 def heading(): 
     return get_impl().heading()
 
+def forward(distance): 
+    return get_impl().forward(distance)
+
+def backwards(distance): 
+    return get_impl().backward(distance)

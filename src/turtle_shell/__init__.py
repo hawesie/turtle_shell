@@ -2,7 +2,7 @@ import rospy
 
 
 from geometry_msgs.msg import Twist, Pose
-from math import radians, fmod, pi, degrees
+from math import radians, fmod, pi, degrees, cos, sin
 
 def wrap_radians(rads):
     if rads > pi:
@@ -38,6 +38,12 @@ class TurtleShell(object):
         self._wait_for_first_pose()
         return (self.x, self.y)
 
+    def right(self, theta):
+        self.rotate(-theta)
+
+    def left(self, theta):
+        self.rotate(theta)
+
     def rotate(self, theta):
 
         self._wait_for_first_pose()
@@ -50,7 +56,7 @@ class TurtleShell(object):
         speed = radians(20)
 
         # acceptable target rotation error
-        error = radians(15)
+        error = radians(5)
 
         # target 
         target_theta = wrap_radians(self.theta + theta)
@@ -68,6 +74,7 @@ class TurtleShell(object):
             self.pub.publish(tw)
             rate.sleep()
 
+        # stop the robot
         tw.angular.z = 0
         count = 0
         while not rospy.is_shutdown() and count < 10: 
@@ -75,6 +82,45 @@ class TurtleShell(object):
             rate.sleep()
             count += 1
 
+    def forward(self, distance):
+        self.travel(distance)
 
-    
+    def backwards(self, distance):
+        self.travel(-distance)
+
+    def travel(self, distance):
+        self._wait_for_first_pose()
+
+        target_x = self.x + distance * cos(radians(self.theta))
+        target_y = self.y + distance * sin(radians(self.theta))
+
+        # rospy.loginfo('%s, %s' % (self.x, self.y))
+        # rospy.loginfo('%s, %s' % (target_x, target_y))
+        # rospy.loginfo('%s, %s' % (abs(target_x - self.x), abs(target_y - self.y)))
+
+        # how far the robot can move in a second in m
+        # needs to be checked for individual robots
+        speed = 1.0
+
+        # acceptable target rotation error
+        error_x = 0.10
+        error_y = 0.10
+
+        tw = Twist()
+        tw.linear.x = speed if distance > 0 else -speed
+
+        rate = rospy.Rate(12)
+
+        while not rospy.is_shutdown() and (abs(target_x - self.x) > error_x or abs(target_y - self.y) > error_y):             
+            # rospy.loginfo('%s, %s' % (abs(target_x - self.x), abs(target_y - self.y)))
+            self.pub.publish(tw)
+            rate.sleep()
+
+        # stop the robot
+        tw.linear.x = 0
+        count = 0
+        while not rospy.is_shutdown() and count < 10: 
+            self.pub.publish(tw)
+            rate.sleep()
+            count += 1
 

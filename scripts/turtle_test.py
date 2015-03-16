@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 
-from turtle_shell import scitos
+from turtle_shell.scitos import *
 
-(x,y) = scitos.position()
-print(x, y)
 
-scitos.rotate(90)        
+print(position(), heading())
 
-(x,y) = scitos.position()
-print(x, y)
+# right(90)        
 
+# print(position(), heading())
+
+# left(90)        
+
+# print(position(), heading())
+
+forward(1.0)
+
+print(position(), heading())
