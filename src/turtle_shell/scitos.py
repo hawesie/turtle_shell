@@ -18,8 +18,6 @@ class ScitosShell(TurtleShell):
         self.y = data.pose.pose.position.y
         (r, p, y) = tf.transformations.euler_from_quaternion([data.pose.pose.orientation.x, data.pose.pose.orientation.y, data.pose.pose.orientation.z, data.pose.pose.orientation.w])        
         self.theta = wrap_radians(y)
-        # print(self.x, self.y, self.theta)
-
 
 impl = None
 
@@ -53,3 +51,4 @@ def forward(distance):
 
 def backwards(distance): 
     return get_impl().backward(distance)
+

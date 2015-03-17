@@ -53,7 +53,7 @@ class TurtleShell(object):
     
         # how far the robot can turn in a second
         # needs to be checked for individual robots
-        speed = radians(20)
+        speed = pi/2
 
         # acceptable target rotation error
         error = radians(5)
@@ -91,28 +91,21 @@ class TurtleShell(object):
     def travel(self, distance):
         self._wait_for_first_pose()
 
-        target_x = self.x + distance * cos(radians(self.theta))
-        target_y = self.y + distance * sin(radians(self.theta))
-
-        # rospy.loginfo('%s, %s' % (self.x, self.y))
-        # rospy.loginfo('%s, %s' % (target_x, target_y))
-        # rospy.loginfo('%s, %s' % (abs(target_x - self.x), abs(target_y - self.y)))
-
         # how far the robot can move in a second in m
         # needs to be checked for individual robots
-        speed = 1.0
-
-        # acceptable target rotation error
-        error_x = 0.10
-        error_y = 0.10
+        speed = 0.3
 
         tw = Twist()
         tw.linear.x = speed if distance > 0 else -speed
 
-        rate = rospy.Rate(12)
 
-        while not rospy.is_shutdown() and (abs(target_x - self.x) > error_x or abs(target_y - self.y) > error_y):             
-            # rospy.loginfo('%s, %s' % (abs(target_x - self.x), abs(target_y - self.y)))
+        time = distance / speed
+        
+        target_time = rospy.get_rostime() + rospy.Duration(time)
+
+        rate = rospy.Rate(10)
+
+        while not rospy.is_shutdown() and rospy.get_rostime() < target_time:
             self.pub.publish(tw)
             rate.sleep()
 
