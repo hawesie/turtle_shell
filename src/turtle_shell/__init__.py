@@ -93,7 +93,7 @@ class TurtleShell(object):
 
         # how far the robot can move in a second in m
         # needs to be checked for individual robots
-        speed = 0.3
+        speed = 0.2
 
         tw = Twist()
         tw.linear.x = speed if distance > 0 else -speed
